@@ -15,6 +15,14 @@ jobs:
       matrix:
         node-version: [18.x]
     steps:
+    - name: create-env-json
+      uses: schdck/create-env-json@v2
+      id: create-env
+      with:
+        file-name: '.secrets.json'
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        MONGODB_DATABASE: ${{ secrets.MONGODB_DATABASE }}
+        NODE_ENV: ${{ github.event.inputs.stage }}
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
