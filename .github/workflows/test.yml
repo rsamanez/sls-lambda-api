@@ -1,0 +1,26 @@
+name: Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "Deploy Stage Name"
+        default: dev
+        required: true
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+      - name: create-env-json
+        uses: schdck/create-env-json@v2
+        id: create-env
+        with:
+          file-name: '.secrets.json'
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          MONGODB_DATABASE: ${{ secrets.MONGODB_DATABASE }}
+          NODE_ENV: ${{ github.event.inputs.stage }}
+      - run: echo ${{ steps.create-env.outputs.full-path }}
