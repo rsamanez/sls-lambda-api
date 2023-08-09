@@ -23,8 +23,11 @@
     "url": "https://github.com/jeremydaly/serverless-api-sample/issues"
   },
   "homepage": "https://github.com/jeremydaly/serverless-api-sample#readme",
-  "dependencies": {
-    "lambda-api": "^0.6.0",
+  "devDependencies": {
+    "serverless-offline": "^12.0.4",
     "serverless-stage-manager": "^1.0.5"
+  },
+  "dependencies": {
+    "lambda-api": "^1.0.3"
   }
 }

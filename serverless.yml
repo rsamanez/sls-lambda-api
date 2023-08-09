@@ -1,11 +1,11 @@
-service: serverless-api-sample
+service: sls-lambda-api
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs18.x
   stage: ${opt:stage,'dev'}
   region: us-east-1
-  profile: <YOUR AWS PROFILE>
+  profile: default
   iamRoleStatements: # IAM Role Permissions
     - Effect: "Allow"
       Action:
@@ -38,11 +38,12 @@ custom:
 # Plugins
 plugins:
   - serverless-stage-manager
+  - serverless-offline
 
 # Functions
 functions:
-  serverless-api-sample:
-    name: ${self:service}-${self:provider.stage}-serverless-api-sample
+  sls-lambda-api:
+    name: ${self:service}-${self:provider.stage}-sls-lambda-api
     handler: handler.router
     timeout: 30
     events:
