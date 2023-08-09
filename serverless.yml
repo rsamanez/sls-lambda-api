@@ -25,10 +25,14 @@ provider:
           - - "arn:aws:s3:::"
             - "Ref" : "ServerlessDeploymentBucket"
             - "/*"
+  environment:
+    MONGODB_URI: ${self:custom.secrets.MONGODB_URI}
+    MONGODB_DATABASE: ${self:custom.secrets.MONGODB_DATABASE}-${self:custom.secrets.NODE_ENV}
 
 
 # Custom variables
 custom:
+  secrets: ${file(.secrets.json)}
   stages: # for stage manager
     - dev
     - staging
