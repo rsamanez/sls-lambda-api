@@ -4,12 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "Lambda Function Deploy Stage Name"
+        description: "Deploy Stage Name"
+        default: dev
         required: true
-#   push:
-#     branches:
-#       - main
-
 jobs:
   deploy:
     name: deploy
