@@ -6,9 +6,9 @@ on:
       stage:
         description: "Lambda Function Deploy Stage Name"
         required: true
-  push:
-    branches:
-      - main
+#   push:
+#     branches:
+#       - main
 
 jobs:
   deploy:
