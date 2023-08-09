@@ -21,6 +21,14 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
+    - name: Create Secrets File
+      uses: schdck/create-env-json@v1
+      id: create-env
+      with:
+        file-name: '.secrets.json'
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        MONGODB_DATABASE: ${{ secrets.MONGODB_DATABASE }}
+        NODE_ENV: ${{ github.event.inputs.stage }}
     - name: serverless deploy
       uses: serverless/github-action@v3.2
       with:
