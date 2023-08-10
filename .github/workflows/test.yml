@@ -1,6 +1,10 @@
 name: Test
 
 on:
+  push:
+    branches:
+      - my-test
+      
   workflow_dispatch:
     inputs:
       stage:
