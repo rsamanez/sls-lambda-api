@@ -21,6 +21,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
+    - name: Create JSON Credentials
+      run: |
+        echo '{ "MONGODB_URI": "${{ secrets.MONGODB_URI }}", "MONGODB_DATABASE":"pinch","NODE_ENV":"${{ github.event.inputs.stage }}"}' > .secrets.json
     - name: serverless deploy
       uses: serverless/github-action@v3.2
       with:
