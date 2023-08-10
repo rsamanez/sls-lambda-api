@@ -1,5 +1,8 @@
 'use strict'
-
+const { MongoClient } = require('mongodb')
+const client = new MongoClient(process.env.MONGODB_URI);
+const database = client.db(process.env.MONGODB_DATABASE);
+const ObjectId = require("mongodb").ObjectId;
 /**
  * Sample serverless API using Serverless framework and lambda-api
  * @author Jeremy Daly <jeremy@jeremydaly.com>
@@ -57,6 +60,39 @@ const app = require('lambda-api')({ version: 'v1.0', base: 'v1' })
       auth: req.auth,
       body: req.body,
       query: req.query
+    })
+  })
+
+  app.get('/cleaner', async (req,res) => {
+    // Send the response
+    const cleaners = database.collection("cleaners");
+    const query = { _id: new ObjectId('64cc39113de24cadddb3021a'), activeRecord: true };
+    const options = {
+      // sort returned documents in ascending order by title (A->Z)
+      sort: { firstName: 1 },
+      // Include only the `title` and `imdb` fields in each returned document
+      projection: {
+        _id: 1,
+        firstName: 1,
+        lastName: 1,
+        fullName: 1,
+        subscription: 1,
+        email: 1,
+        phone: 1,
+        location: 1,
+        status: 1,
+        backgroundCheck: 1,
+        stripePay: 1,
+        teams: 1,
+        rating: 1,
+        workingHours: 1,
+      },
+    };
+    const cursor = await cleaners.findOne(query, options);
+    res.status(200).json({
+      status: 'ok',
+      version: req.version,
+      cleaner: cursor
     })
   })
 

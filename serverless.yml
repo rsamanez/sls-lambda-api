@@ -3,7 +3,7 @@ service: sls-lambda-api
 provider:
   name: aws
   runtime: nodejs18.x
-  stage: ${opt:stage,'dev'}
+  stage: ${self:custom.secrets.NODE_ENV}
   region: us-east-1
   iamRoleStatements: # IAM Role Permissions
     - Effect: "Allow"
@@ -25,18 +25,17 @@ provider:
           - - "arn:aws:s3:::"
             - "Ref" : "ServerlessDeploymentBucket"
             - "/*"
+  environment:
+    MONGODB_URI: ${self:custom.secrets.MONGODB_URI}
+    MONGODB_DATABASE: ${self:custom.secrets.MONGODB_DATABASE}-dev
 
 
 # Custom variables
 custom:
-  stages: # for stage manager
-    - dev
-    - staging
-    - prod
+  secrets: ${file(.secrets.json)}
 
 # Plugins
 plugins:
-  - serverless-stage-manager
   - serverless-offline
 
 # Functions
