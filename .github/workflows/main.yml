@@ -21,6 +21,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
+    - name: Create JSON Credentials
+      run: |
+        echo '{ "MONGODB_URI": "${{ secrets.MONGODB_URI }}", "MONGODB_DATABASE":"pinch","NODE_ENV":"${{ github.event.inputs.stage }}"}' > .secrets.json
     - name: serverless deploy
       uses: serverless/github-action@v3.2
       with:
@@ -28,10 +31,3 @@ jobs:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    - uses: schdck/create-env-json@v2
-      id: create-env
-      with:
-        file-name: '.secrets.json'
-        MONGODB_URI: ${{ secrets.MONGODB_URI }}
-        MONGODB_DATABASE: ${{ secrets.MONGODB_DATABASE }}
-        NODE_ENV: ${{ github.event.inputs.stage }}
