@@ -28,7 +28,7 @@ provider:
   environment:
     MONGODB_URI: ${self:custom.secrets.MONGODB_URI}
     MONGODB_DATABASE: ${self:custom.secrets.MONGODB_DATABASE}-dev
-
+   
 
 # Custom variables
 custom:
@@ -43,8 +43,18 @@ functions:
   sls-lambda-api:
     name: ${self:service}-${self:provider.stage}-sls-lambda-api
     handler: handler.router
+    layers:
+      - arn:aws:lambda:us-east-1:${self:custom.secrets.AWS_ACC}:layer:mongoDB:1
     timeout: 30
     events:
       - http:
           path: 'v1/{proxy+}'
           method: any
+  sls-get-context:
+    name: ${self:service}-${self:provider.stage}-sls-get-context
+    handler: context.handler
+    timeout: 30
+    events:
+      - http:
+          path: 'v1/version'
+          method: GET
